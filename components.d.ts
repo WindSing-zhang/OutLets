@@ -11,6 +11,7 @@ declare module 'vue' {
     NutActionSheet: typeof import('@nutui/nutui')['ActionSheet']
     NutButton: typeof import('@nutui/nutui')['Button']
     NutDialog: typeof import('@nutui/nutui')['Dialog']
+    NutDivider: typeof import('@nutui/nutui')['Divider']
     NutInput: typeof import('@nutui/nutui')['Input']
     NutPopup: typeof import('@nutui/nutui')['Popup']
     NutProgress: typeof import('@nutui/nutui')['Progress']

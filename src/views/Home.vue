@@ -51,16 +51,23 @@
     </div>
     <div>
       <div v-if="data.can_complete_profile" class="toSubmit-wrapper">
-        <div class="text">
+        <div class="text" v-if="!data.is_profile_completed">
           {{
             `生长值已满${
               data.growth_percent > 84 ? data.growth_percent + "%" : ""
             }`
           }}
         </div>
-        <div class="toSubmit">
+        <div class="toSubmit" v-if="!data.is_profile_completed">
           <img
             src="@/assets/images/toSubmit.png"
+            alt="home-bg"
+            @click="showSubmitFrom"
+          />
+        </div>
+        <div class="seeDJXX" v-if="data.is_profile_completed">
+          <img
+            src="@/assets/images/seeDJXX.png"
             alt="home-bg"
             @click="showSubmitFrom"
           />
@@ -74,22 +81,22 @@
       alt="home-bg"
       @click="showActive"
     />
-    <activityAction ref="activityActionRef" @openRules="showRules" @refresh="getData" />
+    <activityAction
+      ref="activityActionRef"
+      @openRules="showRules"
+      @refresh="getData"
+    />
     <rulesDialog ref="rulesDialogRef" />
-    <submitFrom ref="submitFromRef" />
+    <submitFrom ref="submitFromRef" @refresh="getData" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user";
 import activityAction from "@/components/activityAction.vue";
 import rulesDialog from "@/components/rulesDialog.vue";
 import submitFrom from "@/components/submitFrom.vue";
 import { userApi } from "@/api/user";
-const router = useRouter();
-const userStore = useUserStore();
 const activityActionRef = ref<InstanceType<typeof activityAction>>();
 const rulesDialogRef = ref<InstanceType<typeof rulesDialog>>();
 const submitFromRef = ref<InstanceType<typeof submitFrom>>();
@@ -116,7 +123,15 @@ const showRules = (anchor: string) => {
   rulesDialogRef.value?.init(anchor);
 };
 const showSubmitFrom = () => {
-  submitFromRef.value?.init();
+  let type = 0;
+  if (data.value.is_profile_completed) {
+    type = 2;
+  } else if (data.value.can_complete_profile) {
+    type = 0;
+  } else {
+    type = 3;
+  }
+  submitFromRef.value?.init({ type: type });
 };
 </script>
 
@@ -239,6 +254,16 @@ const showSubmitFrom = () => {
       margin-left: 1.5rem;
       img {
         width: 4rem;
+      }
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+    .seeDJXX {
+      cursor: pointer;
+      pointer-events: auto;
+      img {
+        width: 6rem;
       }
       &:active {
         transform: scale(0.95);

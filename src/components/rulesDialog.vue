@@ -9,7 +9,84 @@
       text-align="left"
     >
       <template #default>
-        <div class="rules-content">
+        <div class="rules-content" v-if="activeAnchor === 'task1'">
+          <img
+            src="@/assets/images/close.png"
+            alt="rules"
+            class="close"
+            @click="showRules = false"
+          />
+          <div class="rules-content-item">
+            <div :id="'task2'">夜奥莱 - 膨胀金提前抢</div>
+            2025年3月25日至3月27日每天12:00，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，参与「1元秒30元无门槛现金券」活动。秒杀成功的用户，可获得10%生长值。
+            <div class="QRCode">
+              <img src="@/assets/images/rules/pzj.webp" alt="" />
+              <div style="text-align: center">扫码抢膨胀金</div>
+              <div>注：本任务所获得的生长值，将在1个工作日后于游戏内体现。</div>
+            </div>
+          </div>
+        </div>
+        <div class="rules-content" v-else-if="activeAnchor === 'task2'">
+          <img
+            src="@/assets/images/close.png"
+            alt="rules"
+            class="close"
+            @click="showRules = false"
+          />
+          <div class="rules-content-item">
+            <div :id="'task3'">夜奥莱 - 会员每日签到</div>
+            2025年3月13日至3月27日，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，完成每日签到，连续登陆签到满10天（3月13日至3月22日
+            ）即赠30元现金券（单笔满200元可用），连续签到满15天，再赠100元现金券（单笔满600元可用）。成功获得现金券的用户，可获得10%生长值。
+            <div class="QRCode">
+              <img src="@/assets/images/rules/qd.webp" alt="" />
+              <div style="text-align: center">扫码签到</div>
+              <div>注：本任务所获得的生长值，将在1个工作日后于游戏内体现。</div>
+            </div>
+          </div>
+        </div>
+        <div class="rules-content" v-else-if="activeAnchor === 'task3'">
+          <img
+            src="@/assets/images/close.png"
+            alt="rules"
+            class="close"
+            @click="showRules = false"
+          />
+          <div class="rules-content-item">
+            <div
+              :id="'task4'"
+            >
+              夜奥莱 - 299积分抽千元大奖
+            </div>
+            2025年3月13日至3月27日，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，消耗299积分获得抽奖机会，即有机会获得超级惊喜。完成「299积分抽千元大奖」体验的用户，可获得10%生长值。
+            <div class="QRCode">
+              <img src="@/assets/images/rules/cj.webp" alt="" />
+              <div style="text-align: center">扫码抽奖</div>
+              <div>注：本任务所获得的生长值，将在1个工作日后于游戏内体现。</div>
+            </div>
+          </div>
+        </div>
+        <div class="rules-content" v-else-if="activeAnchor === 'task4'">
+          <img
+            src="@/assets/images/close.png"
+            alt="rules"
+            class="close"
+            @click="showRules = false"
+          />
+          <div class="rules-content-item">
+            <div
+              :id="'task5'"
+            >
+              夜奥莱 - 线上消费
+            </div>
+            活动期间，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，成功购买商品并收货，一个订单可获得10%生长值。
+            <div class="QRCode">
+              <img src="@/assets/images/rules/xf.webp" alt="" />
+              <div style="text-align: center">扫码前往夜奥莱</div>
+              <div>注：本任务所获得的生长值，将在1个工作日后于游戏内体现。</div>
+            </div>
+          </div>
+        </div>
+        <div class="rules-content" v-else>
           <img
             src="@/assets/images/close.png"
             alt="rules"
@@ -34,36 +111,72 @@
           </div>
           <div class="rules-content-item">
             <p>做任务得生长值：</p>
-            <p class="text">
-              <span
+            <div class="text">
+              <div
                 :id="'task1'"
                 :class="{ highlighted: activeAnchor === 'task1' }"
-                >1、每日答题</span
-              ><br />活动期间，用户每日可参与答题获得生长值。每日3道题目均回答正确，可获得6%生长值，每日仅可获得1次。如有问题回答错误，可重新开始答题，直至当日的3道题目均回答正确。活动期间，同一用户最多可获得60%生长值。<br />
-              <span
+              >
+                1、每日答题
+              </div>
+              活动期间，用户每日可参与答题获得生长值。每日3道题目均回答正确，可获得6%生长值，每日仅可获得1次。如有问题回答错误，可重新开始答题，直至当日的3道题目均回答正确。活动期间，同一用户最多可获得60%生长值。<br />
+              <div
                 :id="'task2'"
                 :class="{ highlighted: activeAnchor === 'task2' }"
-                >2、夜奥莱 - 膨胀金提前抢</span
-              ><br />2025年3月25日至3月27日每天12:00，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，参与「1元秒30元无门槛现金券」活动。秒杀成功的用户，可获得10%生长值。<br />
-              <img src="@/assets/images/rules/pzj.png" alt="">
-              <span
+              >
+                2、夜奥莱 - 膨胀金提前抢
+              </div>
+              2025年3月25日至3月27日每天12:00，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，参与「1元秒30元无门槛现金券」活动。秒杀成功的用户，可获得10%生长值。
+              <div class="QRCode">
+                <img src="@/assets/images/rules/pzj.webp" alt="" />
+                <div style="text-align: center">扫码抢膨胀金</div>
+                <div>
+                  注：本任务所获得的生长值，将在1个工作日后于游戏内体现。
+                </div>
+              </div>
+              <div
                 :id="'task3'"
                 :class="{ highlighted: activeAnchor === 'task3' }"
-                >3、夜奥莱 - 会员每日签到</span
-              ><br />2025年3月13日至3月27日，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，完成每日签到，连续登陆签到满10天（3月13日至3月22日
-              ）即赠30元现金券（单笔满200元可用），连续签到满15天，再赠100元现金券（单笔满600元可用）。成功获得现金券的用户，可获得10%生长值。<br />
-              <span
+              >
+                3、夜奥莱 - 会员每日签到
+              </div>
+              2025年3月13日至3月27日，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，完成每日签到，连续登陆签到满10天（3月13日至3月22日
+              ）即赠30元现金券（单笔满200元可用），连续签到满15天，再赠100元现金券（单笔满600元可用）。成功获得现金券的用户，可获得10%生长值。
+              <div class="QRCode">
+                <img src="@/assets/images/rules/qd.webp" alt="" />
+                <div style="text-align: center">扫码签到</div>
+                <div>
+                  注：本任务所获得的生长值，将在1个工作日后于游戏内体现。
+                </div>
+              </div>
+              <div
                 :id="'task4'"
                 :class="{ highlighted: activeAnchor === 'task4' }"
-                >4、夜奥莱 - 299积分抽千元大奖</span
-              ><br />2025年3月13日至3月27日，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，消耗299积分获得抽奖机会，即有机会获得超级惊喜。完成「299积分抽千元大奖」体验的用户，可获得10%生长值。<br />
-              <span
+              >
+                4、夜奥莱 - 299积分抽千元大奖
+              </div>
+              2025年3月13日至3月27日，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，消耗299积分获得抽奖机会，即有机会获得超级惊喜。完成「299积分抽千元大奖」体验的用户，可获得10%生长值。
+              <div class="QRCode">
+                <img src="@/assets/images/rules/cj.webp" alt="" />
+                <div style="text-align: center">扫码抽奖</div>
+                <div>
+                  注：本任务所获得的生长值，将在1个工作日后于游戏内体现。
+                </div>
+              </div>
+              <div
                 :id="'task5'"
                 :class="{ highlighted: activeAnchor === 'task5' }"
-                >5、夜奥莱 - 线上消费</span
-              ><br />活动期间，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，成功购买商品并收货，一个订单可获得10%生长值。<br />
-              注：任务2至任务5所获得的生长值，将在1个工作日后于游戏内体现。
-            </p>
+              >
+                5、夜奥莱 - 线上消费
+              </div>
+              活动期间，用户登录夜奥莱小程序，选择“砂之船（重庆璧山）奥莱”，成功购买商品并收货，一个订单可获得10%生长值。
+              <div class="QRCode">
+                <img src="@/assets/images/rules/xf.webp" alt="" />
+                <div style="text-align: center">扫码前往夜奥莱</div>
+                <div>
+                  注：本任务所获得的生长值，将在1个工作日后于游戏内体现。
+                </div>
+              </div>
+            </div>
           </div>
           <div class="rules-content-item">
             <p>特别提醒：</p>
@@ -89,25 +202,26 @@ let targetAnchor = ref("");
 let activeAnchor = ref("");
 
 const init = (anchor: string = "") => {
-  targetAnchor.value = anchor;
   activeAnchor.value = anchor;
+  // targetAnchor.value = anchor;
+  // activeAnchor.value = anchor;
   showRules.value = true;
-  if (targetAnchor.value) {
-    nextTick(() => {
-      const element = document.getElementById(targetAnchor.value);
-      if (element) {
-        const scrollContainer = document.querySelector(
-          ".nut-dialog__content"
-        ) as HTMLElement;
-        if (scrollContainer) {
-          const elementTop = element.offsetTop - scrollContainer.offsetTop;
-          scrollContainer.scrollTop = elementTop;
-        } else {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    });
-  }
+  // if (targetAnchor.value) {
+  //   nextTick(() => {
+  //     const element = document.getElementById(targetAnchor.value);
+  //     if (element) {
+  //       const scrollContainer = document.querySelector(
+  //         ".nut-dialog__content"
+  //       ) as HTMLElement;
+  //       if (scrollContainer) {
+  //         const elementTop = element.offsetTop - scrollContainer.offsetTop;
+  //         scrollContainer.scrollTop = elementTop;
+  //       } else {
+  //         element.scrollIntoView({ behavior: "smooth" });
+  //       }
+  //     }
+  //   });
+  // }
 };
 
 defineExpose({
@@ -118,7 +232,7 @@ defineExpose({
 <style lang="scss" scoped>
 :deep(.nut-popup) {
   border-radius: 0.5rem;
-  background: linear-gradient(to bottom, #0598ff, #73d2f6);
+  // background: linear-gradient(to bottom, #0598ff, #73d2f6);
 }
 :deep(.nut-dialog) {
   padding: 38px 12px 16px 12px;
@@ -126,7 +240,7 @@ defineExpose({
   position: relative;
 }
 :deep(.nut-dialog__content) {
-  color: #fff;
+  color: #333;
   margin: 0;
   max-height: 30rem;
 }
@@ -134,14 +248,23 @@ defineExpose({
   .close {
     position: absolute;
     z-index: 9999999999999999;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 1rem;
+    right: 1rem;
     width: 0.8rem;
   }
   .rules-content-item {
     line-height: 1.5;
     font-size: 0.8rem;
-
+    margin-bottom: 0.5rem;
+    .QRCode {
+      width: 100%;
+      margin-bottom: 0.5rem;
+      img {
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: 5rem;
+      }
+    }
     .text {
       padding-left: 0.7rem;
     }

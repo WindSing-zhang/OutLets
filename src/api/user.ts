@@ -48,5 +48,14 @@ export const userApi = {
       method: 'post',
       data
     })
+  },
+
+  //完善用户资料
+  completeUserInfo(data: { name: string }): Promise<void> {
+    return request({
+      url: '/v1/auth/user/complete-profile',
+      method: 'post',
+      data
+    })
   }
-} 
+}
