@@ -28,11 +28,21 @@
             <div class="desc">正确回答3道题，即可获得6%生长值</div>
           </div>
           <nut-button
-            :color="daily_questions.completed ? '#999' : 'linear-gradient(to top, #F96E23, #FFD548)'"
+            :color="
+              daily_questions.completed
+                ? '#999'
+                : 'linear-gradient(to top, #F96E23, #FFD548)'
+            "
             @click="goAnswer"
             :disabled="daily_questions.completed"
           >
-            {{ daily_questions.completed ? "已完成" : "去答题" }}
+            {{
+              isExpired
+                ? "已结束"
+                : daily_questions.completed
+                ? "已完成"
+                : "去答题"
+            }}
           </nut-button>
         </div>
         <div class="actionItem">
@@ -120,7 +130,9 @@ const getData = async () => {
   }
 };
 
-const init = () => {
+const isExpired = ref(false);
+const init = (expired: boolean) => {
+  isExpired.value = expired;
   getData();
   showActive.value = true;
 };

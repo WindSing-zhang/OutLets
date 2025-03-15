@@ -50,15 +50,15 @@
       <div class="growth-value">{{ `生长值${data.growth_percent}%` }}</div>
     </div>
     <div>
-      <div v-if="data.can_complete_profile" class="toSubmit-wrapper">
-        <div class="text" v-if="!data.is_profile_completed">
+      <div class="toSubmit-wrapper">
+        <div class="text" v-if="data.can_complete_profile">
           {{
             `生长值已满${
               data.growth_percent > 84 ? data.growth_percent + "%" : ""
             }`
           }}
         </div>
-        <div class="toSubmit" v-if="!data.is_profile_completed">
+        <div class="toSubmit" v-if="data.can_complete_profile">
           <img
             src="@/assets/images/toSubmit.png"
             alt="home-bg"
@@ -97,6 +97,11 @@ import activityAction from "@/components/activityAction.vue";
 import rulesDialog from "@/components/rulesDialog.vue";
 import submitFrom from "@/components/submitFrom.vue";
 import { userApi } from "@/api/user";
+import { activityApi } from "@/api/activity";
+import dayjs from "dayjs";
+import { useUserStore } from "@/stores/user";
+
+const userStore = useUserStore();
 const activityActionRef = ref<InstanceType<typeof activityAction>>();
 const rulesDialogRef = ref<InstanceType<typeof rulesDialog>>();
 const submitFromRef = ref<InstanceType<typeof submitFrom>>();
@@ -110,28 +115,50 @@ const data = ref({
   can_complete_profile: false,
   is_profile_completed: false,
 });
-
+const isExpired = ref(false);
 const getData = async () => {
-  const res = await userApi.getUserInfo();
-  data.value = res;
+  try {
+    const res = await userApi.getUserInfo();
+    data.value = res;
+    await userStore.setUserInfo(res);
+    const activity = await activityApi.getActivityInfo();
+    // 判断活动是否过期
+    if (activity && activity.end_time) {
+      const endTime = dayjs(activity.end_time); // 活动结束时间
+      const currentTime = dayjs(); // 当前时间
+      if (currentTime.isAfter(endTime)) {
+        console.log("活动已过期");
+        isExpired.value = true; // 标记活动已过期
+      } else {
+        console.log("活动未过期");
+        isExpired.value = false; // 标记活动未过期
+      }
+    } else {
+      console.log("活动信息缺失或结束时间无效");
+      isExpired.value = true; // 如果缺少 end_time，默认认为活动已过期
+    }
+  } catch (e) {}
 };
 
 const showActive = () => {
-  activityActionRef.value?.init();
+  activityActionRef.value?.init(isExpired.value);
 };
 const showRules = (anchor: string) => {
   rulesDialogRef.value?.init(anchor);
 };
 const showSubmitFrom = () => {
   let type = 0;
-  if (data.value.is_profile_completed) {
+  if (isExpired.value) {
+    type = 3;
+  } else if (data.value.is_profile_completed) {
     type = 2;
   } else if (data.value.can_complete_profile) {
     type = 0;
-  } else {
-    type = 3;
   }
-  submitFromRef.value?.init({ type: type });
+  submitFromRef.value?.init({
+    type: type,
+    isFull: data.value.growth_percent < 100 ? false : true,
+  });
 };
 </script>
 
@@ -235,7 +262,7 @@ const showSubmitFrom = () => {
   }
   .toSubmit-wrapper {
     position: absolute;
-    bottom: 6rem;
+    bottom: 5.5rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
@@ -247,11 +274,12 @@ const showSubmitFrom = () => {
       font-weight: bold;
       margin-left: 5rem;
       text-wrap: nowrap;
+      width: 7rem;
     }
     .toSubmit {
       cursor: pointer;
       pointer-events: auto;
-      margin-left: 1.5rem;
+      //margin-left: 1.5rem;
       img {
         width: 4rem;
       }

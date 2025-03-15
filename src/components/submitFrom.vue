@@ -22,13 +22,13 @@
         </div>
         <div class="form-item">
           <nut-input
-            v-model="infoForm.phone"
+            v-model="infoForm.remark_phone"
             placeholder="会员手机号"
             class="input"
-            disabled
+            :disabled="fromType === 3"
           >
             <template #prefix>
-              <i class="phone-icon">📱</i>
+              <i class="remark_phone-icon">📱</i>
             </template>
           </nut-input>
         </div>
@@ -72,10 +72,18 @@
           您已成功完成领奖信息登记，后续可在游戏主页面“查看登记信息”中，查看已登记的领奖信息。
         </p>
         <p
+          v-if="isFull"
           class="tips"
           style="font-size: 1.2rem; text-indent: 2em; text-align: left"
         >
           请您于2025年3月28日前往砂之船(重庆璧山)奥莱会员中心，凭最终的登记信息领取春日限定礼品1份。
+        </p>
+        <p
+          v-else
+          class="tips"
+          style="font-size: 1.2rem; text-indent: 2em; text-align: left"
+        >
+          生长值满85%可获得【50元代金券1张】；生长值满100%可获得【春日限定礼品1份】。详细内容请前往游戏首页“活动规则”查看。
         </p>
       </div>
     </nut-popup>
@@ -90,11 +98,13 @@ const userStore = useUserStore();
 const emit = defineEmits(["refresh"]);
 const show = ref(false);
 const infoForm = ref({
-  phone: userStore.userInfo?.phone,
+  remark_phone: userStore.userInfo?.remark_phone,
   name: userStore.userInfo?.name,
 });
 const fromType = ref(null);
-const init = (params: { type: number }) => {
+const isFull = ref(false);
+const init = (params: { type: number; isFull: boolean }) => {
+  isFull.value = params.isFull;
   fromType.value = params.type;
   show.value = true;
 };
@@ -104,10 +114,14 @@ const handleSubmit = async () => {
     showToast.warn("请填写完整信息");
     return;
   }
-
+  if (!/^1[3-9]\d{9}$/.test(infoForm.value.remark_phone)) {
+    showToast.warn("请输入正确的手机号");
+    return;
+  }
   try {
     const loginRes = await userApi.completeUserInfo({
       name: infoForm.value.name,
+      remark_phone: infoForm.value.remark_phone as string,
     });
     showToast.success("提交成功");
     fromType.value = 1;

@@ -11,6 +11,7 @@ interface UserInfo {
   can_complete_profile: boolean
   is_profile_completed: boolean
   activity_id: number
+  remark_phone: string
 }
 
 interface UserState {
@@ -23,13 +24,13 @@ export const useUserStore = defineStore('user', {
     userInfo: null,
     isLogin: false
   }),
-  
+
   getters: {
     getUserInfo(state): UserInfo | null {
       return state.userInfo
     }
   },
-  
+
   actions: {
     setToken(token: string) {
       localStorage.setItem('token', token);

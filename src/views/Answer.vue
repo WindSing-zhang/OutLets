@@ -90,7 +90,7 @@
             class="answer-content-title"
             style="text-align: center; margin-top: 6rem"
           >
-            有问题没有回答正确哦，<br />再思考一线呢。
+            有问题没有回答正确哦，<br />再思考一下呢。
           </div>
         </div>
 
