@@ -161,9 +161,13 @@ const handleSubmit = async (optionId: string, questionId: string) => {
     answer_option_ids: [optionId],
   };
   answer.value.push(params);
-  const res = await activityApi.submitAnswer({ answers: answer.value });
-  is_correct.value = res.every((item) => item.is_correct === true);
-  answered.value++;
+  try {
+    const res = await activityApi.submitAnswer({ answers: answer.value });
+    is_correct.value = res.every((item) => item.is_correct === true);
+    answered.value++;
+  } catch (e) {
+    router.back();
+  }
 };
 
 const goBackToAnswer = () => {

@@ -53,7 +53,7 @@
         </div>
         <!-- 请填写已注册砂之船（重庆璧山）奥莱会员的姓名及会员手机号，并于2025年3月28日前往砂之船（重庆璧山）奥莱会员中心，凭登记信息领取春日限定礼品1份。 -->
         <p class="tips">
-          请于2025年3月28日前往砂之船（重庆璧山）奥莱会员中心，凭登记信息领取春日限定礼品1份。
+          为避免礼品发放失败，请务必确认所填写信息为砂之船（重庆璧山）奥莱会员信息。
         </p>
       </div>
       <div class="login-form" v-if="fromType === 1">
@@ -72,14 +72,6 @@
           您已成功完成领奖信息登记，后续可在游戏主页面“查看登记信息”中，查看已登记的领奖信息。
         </p>
         <p
-          v-if="isFull"
-          class="tips"
-          style="font-size: 1.2rem; text-indent: 2em; text-align: left"
-        >
-          请您于2025年3月28日前往砂之船(重庆璧山)奥莱会员中心，凭最终的登记信息领取春日限定礼品1份。
-        </p>
-        <p
-          v-else
           class="tips"
           style="font-size: 1.2rem; text-indent: 2em; text-align: left"
         >

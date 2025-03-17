@@ -1,8 +1,8 @@
 <template>
-  <audio ref="bgMusic" loop autoplay preload="auto">
+  <audio id="bgmusic" ref="bgMusic" loop autoplay preload="auto">
     <source src="@/assets/bgm.mp3" type="audio/mp3">
   </audio>
-  <router-view></router-view>
+  <router-view @click="tryAutoPlay"></router-view>
 </template>
 
 <script setup lang="ts">
@@ -11,6 +11,7 @@ import { ref, onMounted } from 'vue';
 const bgMusic = ref<HTMLAudioElement | null>(null);
 
 const tryAutoPlay = async () => {
+  
   if (bgMusic.value) {
     bgMusic.value.volume = 0.1; // 设置音量为50%
     try {

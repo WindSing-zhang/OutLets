@@ -116,6 +116,7 @@ const data = ref({
   is_profile_completed: false,
 });
 const isExpired = ref(false);
+const isNotStarted = ref(false);
 const getData = async () => {
   try {
     const res = await userApi.getUserInfo();
@@ -123,37 +124,53 @@ const getData = async () => {
     await userStore.setUserInfo(res);
     const activity = await activityApi.getActivityInfo();
     // 判断活动是否过期
-    if (activity && activity.end_time) {
+    if (activity && activity.start_time && activity.end_time) {
+      const startTime = dayjs(activity.start_time); // 活动开始时间
       const endTime = dayjs(activity.end_time); // 活动结束时间
       const currentTime = dayjs(); // 当前时间
-      if (currentTime.isAfter(endTime)) {
+
+      if (currentTime.isBefore(startTime)) {
+        console.log("活动未开始");
+        isNotStarted.value = true; // 标记活动未开始
+        isExpired.value = false; // 活动未开始，肯定未过期
+      } else if (currentTime.isAfter(endTime)) {
         console.log("活动已过期");
         isExpired.value = true; // 标记活动已过期
+        isNotStarted.value = false; // 活动已过期，肯定不是未开始
       } else {
-        console.log("活动未过期");
+        console.log("活动正在进行中");
         isExpired.value = false; // 标记活动未过期
+        isNotStarted.value = false; // 标记活动不是未开始
       }
     } else {
-      console.log("活动信息缺失或结束时间无效");
-      isExpired.value = true; // 如果缺少 end_time，默认认为活动已过期
+      console.log("活动信息缺失或开始/结束时间无效");
+      isExpired.value = true; // 如果缺少 start_time 或 end_time，默认认为活动已过期
+      isNotStarted.value = false;
     }
   } catch (e) {}
 };
 
 const showActive = () => {
-  activityActionRef.value?.init(isExpired.value);
+  activityActionRef.value?.init(isExpired.value, isNotStarted.value);
 };
 const showRules = (anchor: string) => {
   rulesDialogRef.value?.init(anchor);
 };
 const showSubmitFrom = () => {
   let type = 0;
-  if (isExpired.value) {
+  // if (isExpired.value) {
+  //   type = 3;
+  // } else if (data.value.is_profile_completed) {
+  //   type = 2;
+  // } else if (data.value.can_complete_profile) {
+  //   type = 0;
+  // }
+  if (data.value.can_complete_profile) {
+    type = 0;
+  } else if (isExpired.value) {
     type = 3;
   } else if (data.value.is_profile_completed) {
     type = 2;
-  } else if (data.value.can_complete_profile) {
-    type = 0;
   }
   submitFromRef.value?.init({
     type: type,

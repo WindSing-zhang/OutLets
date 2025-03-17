@@ -99,7 +99,7 @@ const handleSendCode = async () => {
       }
     }, 1000);
   } catch (error) {
-    showToast.fail('发送失败，请重试');
+    // showToast.fail('发送失败，请重试');
   }
 };
 

@@ -23,21 +23,25 @@
           />
           <div class="actionItem-content">
             <div class="title">
-              {{ `每日答题(${daily_questions.completed ? 1 : 0}/1)` }}
+              {{
+                `每日答题(${daily_questions.completed || isExpired ? 1 : 0}/1)`
+              }}
             </div>
             <div class="desc">正确回答3道题，即可获得6%生长值</div>
           </div>
           <nut-button
             :color="
-              daily_questions.completed
+              daily_questions.completed || isExpired || isNotStarted
                 ? '#999'
                 : 'linear-gradient(to top, #F96E23, #FFD548)'
             "
             @click="goAnswer"
-            :disabled="daily_questions.completed"
+            :disabled="daily_questions.completed || isExpired || isNotStarted"
           >
             {{
-              isExpired
+              isNotStarted
+                ? "未开始"
+                : isExpired
                 ? "已结束"
                 : daily_questions.completed
                 ? "已完成"
@@ -48,7 +52,7 @@
         <div class="actionItem">
           <img class="icon" src="@/assets/images/quiz/two.png" alt="home-bg" />
           <div class="actionItem-content">
-            <div class="title">夜奥莱-膨胀金提前抢</div>
+            <div class="title">砂之船夜奥莱-膨胀金提前抢</div>
             <div class="desc">秒杀成功的用户，可获得10%生长值</div>
           </div>
           <nut-button
@@ -65,8 +69,8 @@
             alt="home-bg"
           />
           <div class="actionItem-content">
-            <div class="title">夜奥莱-会员每日签到</div>
-            <div class="desc">成功获得现金券的用户, 可获得10% 生长值</div>
+            <div class="title">砂之船夜奥莱-会员每日签到</div>
+            <div class="desc">成功签到1天，可获得10%生长值</div>
           </div>
           <nut-button
             color="linear-gradient(to top, #F96E23, #FFD548)"
@@ -78,7 +82,7 @@
         <div class="actionItem">
           <img class="icon" src="@/assets/images/quiz/four.png" alt="home-bg" />
           <div class="actionItem-content">
-            <div class="title">夜奥莱-299积分 抽千元大奖</div>
+            <div class="title">砂之船夜奥莱-299积分抽千元大奖</div>
             <div class="desc">完成体验的用户，可获得10%生长值</div>
           </div>
           <nut-button
@@ -91,8 +95,8 @@
         <div class="actionItem">
           <img class="icon" src="@/assets/images/quiz/five.png" alt="home-bg" />
           <div class="actionItem-content">
-            <div class="title">夜奥莱-线上消费</div>
-            <div class="desc">成功购买商品并收货, 一个订单可获得 10%生长值</div>
+            <div class="title">砂之船夜奥莱-线上消费</div>
+            <div class="desc">成功购买商品并收货，一个订单可获得10%生长值</div>
           </div>
           <nut-button
             color="linear-gradient(to top, #F96E23, #FFD548)"
@@ -131,8 +135,10 @@ const getData = async () => {
 };
 
 const isExpired = ref(false);
-const init = (expired: boolean) => {
+const isNotStarted = ref(false);
+const init = (expired: boolean, NotStarted: boolean) => {
   isExpired.value = expired;
+  isNotStarted.value = NotStarted;
   getData();
   showActive.value = true;
 };
